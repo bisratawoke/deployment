@@ -16,4 +16,4 @@ COPY . .
 
 RUN npm i
 
-RUN npm run prod
+CMD ["npm", "run", "prod"]
