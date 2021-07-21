@@ -1,6 +1,8 @@
 const fetch = require('node-fetch');
 const path = require('path');
 const {spawn} = require('child_process');
+const deployTest = require('./test');
+
 //check authenticity of the token
 //make api call to account app 
 const tokenChecker = async(req,res,next) => {
@@ -109,7 +111,7 @@ const upload = (req,res,next) => {
 				d = dr.join('/');
 				
 				
-				uploadPath = path.join(process.env.BASE_DIR,`/${req.query.dn}/files/${d}`);
+				uploadPath = path.join(process.env.BASE_DIR_DOCKER,`/${req.query.dn}/files/${d}`);
 				
 				let file  = req.files[dir];
 				
@@ -158,7 +160,7 @@ const upload = (req,res,next) => {
 
 //deploy middle ware
 
-const deploy = (req,res,next) => {
+const build = (req,res,next) => {
 
 	if(req.query.proj_pub_id && req.query.dn){
 		
@@ -211,12 +213,40 @@ const deploy = (req,res,next) => {
 
 
 }
+
+//deploy middleware
+
+const deploy = async(req,res,next) => {
+
+
+	try{
+		
+		const result = await deployTest(req.query.dn);
+		
+		console.log(result);
+		
+		return next();
+		
+	}catch(err) {
+		
+		console.log(err);
+		
+		return res.status(500).json({message:'[SERVER ERROR] Unknown'});
+	
+	}
+
+	
+
+
+}
 //
 module.exports = {
 
 	tokenChecker,
 	
 	upload,
+	
+	build,
 	
 	deploy
 }
