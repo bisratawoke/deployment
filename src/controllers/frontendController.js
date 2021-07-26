@@ -168,7 +168,7 @@ const build = (req,res,next) => {
 		
 		const deploy = spawn(dir,{
 		
-			cwd:`${process.env.BASE_DIR}/${req.query.dn}`,
+			cwd:`${process.env.BASE_DIR_DOCKER}/${req.query.dn}`,
 		
 			env:{
 				domain_name: req.query.dn
