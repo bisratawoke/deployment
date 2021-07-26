@@ -20,8 +20,10 @@ const createTransaction = (auth) => {
 			let version = selectResponse.version;
 			
 			console.log(selectResponse);
+			//UPDATE films SET kind = 'Dramatic' WHERE kind = 'Drama';
+
 			
-			const insertResponse = await genericInsert('insert into dataplaneapi(status) values($1)',['in_progress']);
+			const insertResponse = await genericInsert('update dataplaneapi set status=$1 where version=$2',['in_progress',version]);
 			
 			let opt = {
 			
@@ -227,7 +229,12 @@ const commit = (id,auth,version) => {
 			
 			const response = await fetch(`${process.env.DATA_PLANE_API}/v2/services/haproxy/transactions/${id}`,opt);
 			
-			const insertResponse = await genericInsert('insert into dataplaneapi(version,status) values($1,$2)',[version,'idle']);
+		
+
+			//update dataplaneapi set version=$1,status=$2 where version=$3 , [version+1,'idle',version]
+			
+			let v = version+1
+			const insertResponse = await genericInsert('update dataplaneapi set version=$1,status=$2 where version=$3', [v,'idle',version]);
 			
 			console.log(`in commit ${response.status}`);
 			

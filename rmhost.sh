@@ -1,13 +1,16 @@
 #! /bin/bash
 
-domain_name = $1
 
-docker stop facebook.com
-
-docker rm facebook.com
-
-docker rmi facebook.com
-
-echo $domain_name
-
+if [[ $1 = "static" ]]
+then 
+ echo "static"
+elif [[ $1 = "nodejs" ]]
+then
+ echo "nodejs"
+elif [[ $1  = "php" ]]
+then
+ echo "php"
+else
+  echo "error"
+fi
 

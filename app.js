@@ -28,7 +28,7 @@ app.use('/api/deploy/test',(req,res) => {
 //adding frontend router
 const frontendRouter = require('./src/routers/frontendRouter');
 
-app.use('/api/deploy/frontend',frontendRouter);
+app.use('/api/deploy',frontendRouter);
 //starting server
 
 app.listen(process.env.PORT,() => console.log(`Server started on port ${process.env.PORT}`));

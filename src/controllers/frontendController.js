@@ -111,7 +111,7 @@ const upload = (req,res,next) => {
 				d = dr.join('/');
 				
 				
-				uploadPath = path.join(process.env.BASE_DIR_DOCKER,`/${req.query.dn}/files/${d}`);
+				uploadPath = path.join(process.env.BASE_DIR,`/${req.query.dn}/files/${d}`);
 				
 				let file  = req.files[dir];
 				
@@ -162,16 +162,18 @@ const upload = (req,res,next) => {
 
 const build = (req,res,next) => {
 
-	if(req.query.proj_pub_id && req.query.dn){
+	if(req.query.proj_pub_id && req.query.dn && req.query.type){
 		
-		const dir = path.join(__dirname,'/deploy.sh');
+		const cmd = path.join(__dirname,`/deploy.sh`);
 		
-		const deploy = spawn(dir,{
+		const deploy = spawn(cmd,[`${req.query.type}`],{
 		
-			cwd:`${process.env.BASE_DIR_DOCKER}/${req.query.dn}`,
+			cwd:`${process.env.BASE_DIR}/${req.query.dn}`,
 		
 			env:{
-				domain_name: req.query.dn
+				domain_name: req.query.dn,
+				
+				type: req.query.type
 			}
 		});
 		
