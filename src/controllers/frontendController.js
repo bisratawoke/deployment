@@ -111,7 +111,7 @@ const upload = (req,res,next) => {
 				d = dr.join('/');
 				
 				
-				uploadPath = path.join(process.env.BASE_DIR,`/${req.query.dn}/files/${d}`);
+				uploadPath = path.join(process.env.BASE_DIR_DOCKER,`/${req.query.dn}/files/${d}`);
 				
 				let file  = req.files[dir];
 				
@@ -174,7 +174,7 @@ const build = (req,res,next) => {
 		
 		const deploy = spawn(cmd,{
 		
-			cwd:`${process.env.BASE_DIR}/${req.query.dn}`,
+			cwd:`${process.env.BASE_DIR_DOCKER}/${req.query.dn}`,
 		
 			env:{
 				domain_name: req.query.dn,
