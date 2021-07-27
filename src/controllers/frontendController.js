@@ -164,16 +164,21 @@ const build = (req,res,next) => {
 
 	if(req.query.proj_pub_id && req.query.dn && req.query.type){
 		
-		const cmd = path.join(__dirname,`/deploy.sh`);
+		let cmd = null;
 		
-		const deploy = spawn(cmd,[`${req.query.type}`],{
+		if(req.query.type == 'php')  cmd = path.join(__dirname,`/php.sh`);
+		
+		else if(req.query.type == 'nodejs') cmd = path.join(__dirname,'/node.sh');
+		
+		else cmd = path.join(__dirname,'/deploy.sh');
+		
+		const deploy = spawn(cmd,{
 		
 			cwd:`${process.env.BASE_DIR}/${req.query.dn}`,
 		
 			env:{
 				domain_name: req.query.dn,
 				
-				type: req.query.type
 			}
 		});
 		
